@@ -1,43 +1,63 @@
 
---[[
-	nice tutorial
-	https://gamedevelopment.tutsplus.com/tutorials/how-to-create-a-custom-2d-physics-engine-the-basics-and-impulse-resolution--gamedev-6331
-]]
-
 require "maths"
 require "physics"
+require "control"
 
 function love.load()
 	world = {}
-		world.circle1 = {}
-			world.circle1.x = 100
-			world.circle1.y = 100
-			world.circle1.vx = 0
-			world.circle1.vy = 0
-			world.circle1.r = 20
-			world.circle1.m = 100
+	
+	world.x = 780
+	world.y = 780
+	world.drag = 0.99
 
-		world.circle2 = {}
-			world.circle2.x = 200
-			world.circle2.y = 200
-			world.circle2.vx = 0
-			world.circle2.vy = 0
-			world.circle2.r = 20
-			world.circle2.m = 100
+	love.window.setMode(world.x, world.y)
 
+	world.objects = {}
+
+	--[[for i = 1,100 do
+		createBall(
+			math.random(0, world.x),
+			math.random(0, world.y),
+			math.random(-30, 30),
+			math.random(-30, 30),
+			math.random(10, 100),
+			100,
+			1
+		)
+
+	end]]
+
+	createBall(100, 100, 300, 0, 20, 200, 1)
+	createBall(200, 100, 0, 0, 20, 100, 1)
+
+	-- player --
+
+	world.objects.circleC = {}
+	world.objects.circleC.x = 0
+	world.objects.circleC.y = 0
+	world.objects.circleC.vx = 0
+	world.objects.circleC.vy = 0
+	world.objects.circleC.m = 100
+	world.objects.circleC.r = 80
+	world.objects.circleC.e = 1
 
 end
 
 
 function love.update(dt)
-	print(isColliding(world.circle1, world.circle2))
-	update(world, dt)
+	os.execute("clear")
+	print("fps:"..(1 / dt))
+	update(dt)
+
+	local mX, mY = love.mouse.getPosition()
+	world.objects.circleC.x = mX
+	world.objects.circleC.y = mY
 
 end
 
 
 function love.draw()
-	for name, object in pairs(world) do
+	for name, object in pairs(world.objects) do
 		love.graphics.circle("line", object.x, object.y, object.r)
 
 	end
