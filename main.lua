@@ -63,7 +63,7 @@ function love.update(dt)
 			math.random(-70, 70),
 			math.random(-70, 70),
 			math.random(5, 15),
-			100,
+			math.random(50, 500),
 			1
 		)
 
