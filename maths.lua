@@ -1,5 +1,5 @@
 function isColliding(a, b)
-	if getDistance(a, b) < (a.r + b.r) ^ 2 then
+	if getDistance2(a, b) <= (a.r + b.r) ^ 2 then
 		return true
 	else
 		return false
@@ -18,7 +18,7 @@ function isPointInCircle(x, y, a)
 
 end
 
-function getDistance(a, b) return (a.x - b.x) ^ 2 + (a.y - b.y) ^ 2 end
+function getDistance2(a, b) return (a.x - b.x) ^ 2 + (a.y - b.y) ^ 2 end
 
 function getCollisionDirection(a, b)
 	

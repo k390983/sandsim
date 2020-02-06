@@ -1,6 +1,8 @@
 function update(dt)
 	for nameA, A in pairs(world.objects) do
+
 		-- clamp speed --
+		
 		if math.abs(A.vx) < world.minSpeed then A.vx = 0 end
 		if math.abs(A.vy) < world.minSpeed then A.vy = 0 end
 
@@ -22,8 +24,8 @@ function update(dt)
 
 		-- external forces --
 
-		A.vx = A.vx * world.drag
-		A.vy = A.vy * world.drag
+		--A.vx = A.vx * world.drag
+		--A.vy = A.vy * world.drag
 
 		-- position --
 
@@ -50,43 +52,34 @@ function update(dt)
 		for nameB, B in pairs(world.objects) do
 			if nameB ~= nameA then
 				if isColliding(A, B) then
-					--print(nameA.." collided with "..nameB)
-
-					local distance = math.sqrt(getDistance(A, B))
+					local distance = math.sqrt(getDistance2(A, B))
 
 					-- static --
 
-					local overlap = distance - A.r - B.r
+					local overlap = (distance - A.r - B.r) / 2
 
-					A.x = A.x - overlap / 2 * (A.x - B.x) / distance
-					A.y = A.y - overlap / 2 * (A.y - B.y) / distance
-					B.x = B.x - overlap / 2 * (B.x - A.x) / distance
-					B.y = B.y - overlap / 2 * (B.y - A.y) / distance
+					A.x = A.x - overlap * (A.x - B.x) / distance
+					A.y = A.y - overlap * (A.y - B.y) / distance
 
-					-- dynamic --
+					B.x = B.x + overlap * (A.x - B.x) / distance
+					B.y = B.y + overlap * (A.y - B.y) / distance
 
-					local n = {}
-					n.x = (B.x - A.x) / distance
-					n.y = (B.y - A.y) / distance
+					-- dynamic (https://en.wikipedia.org/wiki/Elastic_collision) --
 
-					local t = {}
-					t.x = -n.y
-					t.y = n.x
+					distance = math.sqrt(getDistance2(A, B))
 
-					local dp = {}
-					dp.tanA = A.vx * t.x + A.vy * t.y
-					dp.tanB = B.vx * t.x + B.vy * t.y
-					dp.normA = A.vx * n.x + A.vy * n.y
-					dp.normB = B.vx * n.x + B.vy * n.y
+					local nx = (B.x - A.x) / distance
+					local ny = (B.y - A.y) / distance
 
-					local m = {}
-					m.A = (dp.normA * (A.m - B.m) + 2 * B.m * dp.normB) / (A.m + B.m)
-					m.B = (dp.normB * (B.m - A.m) + 2 * A.m * dp.normA) / (B.m + A.m)
+					local kx = A.vx - B.vx
+					local ky = A.vy - B.vy
+					local p = 2 * (nx * kx + ny * ky) / (A.m + B.m)
 
-					A.vx = t.x * dp.tanA + n.x * m.A
-					A.vy = t.y * dp.tanA + n.y * m.A
-					B.vx = t.x * dp.tanB + n.x * m.B
-					B.vy = t.y * dp.tanB + n.y * m.B
+					A.vx = A.vx - p * B.m * nx
+					A.vy = A.vy - p * B.m * ny
+
+					B.vx = B.vx + p * A.m * nx
+					B.vy = B.vy + p * A.m * ny
 
 				end
 
