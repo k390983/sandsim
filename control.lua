@@ -14,28 +14,34 @@ function createBall(x, y, vx, vy, r, m, e)
 end
 
 function mouseInput(dt)
-	if love.mouse.isDown(1) then
-		local x = love.mouse.getX()
-		local y = love.mouse.getY()
+	local x = love.mouse.getX()
+	local y = love.mouse.getY()
 
+	if love.mouse.isDown(1) then
 		for nameA, A in pairs(world.objects) do
 			if isPointInCircle(x, y, A) then
-				A.vx = (x - A.x) / dt
-				A.vy = (y - A.y) / dt
+				--A.vx = (x - A.x) / dt
+				--A.vy = (y - A.y) / dt
+				A.vx = 0
+				A.vy = 0
 				A.x = x
 				A.y = y
 
-			else
-				if not mouseState then
-					createBall(
-						x,
-						y,
-						0,
-						0,
-						math.random(10, 30),
-						math.random(50, 200),
-						1
-					)
+			end
+
+		end
+
+	end
+
+	if love.mouse.isDown(2) then
+
+		if mouseState == true then
+
+
+		else
+			for nameA, A in pairs(world.objects) do
+				if isPointInCircle(x, y, A) then
+					currentBall = A
 					mouseState = true
 
 				end
@@ -45,7 +51,13 @@ function mouseInput(dt)
 		end
 
 	else
+		if currentBall ~= nil then
+			currentBall.vx = (currentBall.x - x) * pullSpeed --* (-1)
+			currentBall.vy = (currentBall.y - y) * pullSpeed --* (-1)
+		end
+
 		mouseState = false
+		currentBall = nil
 
 	end
 

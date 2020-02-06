@@ -1,8 +1,24 @@
 function update(dt)
 	for nameA, A in pairs(world.objects) do
 		-- clamp speed --
-		if A.vx < 0.1 then A.vx = 0 end
-		if A.vy < 0.1 then A.vy = 0 end
+		if math.abs(A.vx) < world.minSpeed then A.vx = 0 end
+		if math.abs(A.vy) < world.minSpeed then A.vy = 0 end
+
+		if A.vx > 0 then
+			if A.vx > world.maxSpeed then A.vx = world.maxSpeed end
+
+		else
+			if A.vx < -world.maxSpeed then A.vx = -world.maxSpeed end
+
+		end
+
+		if A.vy > 0 then
+			if A.vy > world.maxSpeed then A.vy = world.maxSpeed end
+
+		else
+			if A.vy < -world.maxSpeed then A.vy = -world.maxSpeed end
+
+		end
 
 		-- external forces --
 
@@ -13,6 +29,21 @@ function update(dt)
 
 		A.x = A.x + A.vx * dt
 		A.y = A.y + A.vy * dt
+
+		-- screen edges --
+
+		if A.x < 0 then 
+			A.x = world.x
+		end
+		if A.x > world.x then
+			A.x = 0
+		end
+		if A.y < 0 then
+			A.y = world.y
+		end
+		if A.y > world.y then
+			A.y = 0
+		end
 
 		-- collision --
 
