@@ -1,10 +1,41 @@
 function update(dt)
+	updatePositions(dt)
+	--externalForces(dt)
+	collisons(dt)
+
+end
+
+function externalForces(dt)
 	for nameA, A in pairs(world.objects) do
+		A.vx = A.vx * world.drag
+		A.vy = A.vy * world.drag
+
+	end
+
+end
+
+function updatePositions(dt)
+	for nameA, A in pairs(world.objects) do
+
+		-- screen edges --
+
+		if A.x < 0 then 
+			A.x = world.x
+		end
+		if A.x > world.x then
+			A.x = 0
+		end
+		if A.y < 0 then
+			A.y = world.y
+		end
+		if A.y > world.y then
+			A.y = 0
+		end
 
 		-- clamp speed --
 		
-		if math.abs(A.vx) < world.minSpeed then A.vx = 0 end
-		if math.abs(A.vy) < world.minSpeed then A.vy = 0 end
+		--if math.abs(A.vx) < world.minSpeed then A.vx = 0 end
+		--if math.abs(A.vy) < world.minSpeed then A.vy = 0 end
 
 		if A.vx > 0 then
 			if A.vx > world.maxSpeed then A.vx = world.maxSpeed end
@@ -22,39 +53,25 @@ function update(dt)
 
 		end
 
-		-- external forces --
-
-		--A.vx = A.vx * world.drag
-		--A.vy = A.vy * world.drag
-
 		-- position --
 
 		A.x = A.x + A.vx * dt
 		A.y = A.y + A.vy * dt
 
-		-- screen edges --
+	end
 
-		if A.x < 0 then 
-			A.x = world.x
-		end
-		if A.x > world.x then
-			A.x = 0
-		end
-		if A.y < 0 then
-			A.y = world.y
-		end
-		if A.y > world.y then
-			A.y = 0
-		end
+end
 
-		-- collision --
-
+function collisons(dt)
+	for nameA, A in pairs(world.objects) do
+		
 		for nameB, B in pairs(world.objects) do
 			if nameB ~= nameA then
 				if isColliding(A, B) then
-					local distance = math.sqrt(getDistance2(A, B))
 
 					-- static --
+
+					local distance = math.sqrt(getDistance2(A, B))
 
 					local overlap = (distance - A.r - B.r) / 2
 
@@ -64,9 +81,9 @@ function update(dt)
 					B.x = B.x + overlap * (A.x - B.x) / distance
 					B.y = B.y + overlap * (A.y - B.y) / distance
 
-					-- dynamic (https://en.wikipedia.org/wiki/Elastic_collision) --
+					-- dynamic --
 
-					distance = math.sqrt(getDistance2(A, B))
+					local distance = math.sqrt(getDistance2(A, B))
 
 					local nx = (B.x - A.x) / distance
 					local ny = (B.y - A.y) / distance
@@ -88,5 +105,5 @@ function update(dt)
 		end
 
 	end
-
+	
 end

@@ -93,4 +93,16 @@ function keyboardinput()
 
 	end
 
+	if love.keyboard.isDown("q") and love.timer.getTime() - qTime > 0.2 and world.updateSpeed > -4 then
+		world.updateSpeed = world.updateSpeed - 1
+		qTime = love.timer.getTime()
+
+	end
+
+	if love.keyboard.isDown("e") and love.timer.getTime() - eTime > 0.2 and world.updateSpeed < 4 then
+		world.updateSpeed = world.updateSpeed + 1
+		eTime = love.timer.getTime()
+
+	end
+
 end

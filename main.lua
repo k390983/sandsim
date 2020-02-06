@@ -2,15 +2,21 @@
 require "maths"
 require "physics"
 require "control"
+local socket = require "socket"
 
 function love.load()
 	world = {}
 	
-	world.x = 480
-	world.y = 480
+	--world.x = 480
+	--world.y = 480
+
+	world.x = 1000
+	world.y = 1000
+
 	world.drag = 0.99
 	world.minSpeed = 1
 	world.maxSpeed = 1000
+	world.updateSpeed = 0
 
 	love.window.setMode(world.x, world.y)
 
@@ -19,6 +25,9 @@ function love.load()
 	reset()
 
 	mouseState = false
+	qTime = love.timer.getTime()
+	eTime = love.timer.getTime()
+
 	pullSpeed = 10
 	currentBall = nil
 
@@ -27,7 +36,7 @@ end
 
 function love.update(dt)
 	os.execute("clear")
-	print("fps:"..(1 / dt))
+	print("ups:"..(1 / dt).." update speed: 1/"..2 ^ world.updateSpeed)
 	
 	local total = 0
 
@@ -55,6 +64,8 @@ function love.update(dt)
 
 	mouseInput()
 	keyboardinput()
+
+	dt = dt * 1 / 2 ^ world.updateSpeed
 
 	update(dt)
 
@@ -84,5 +95,10 @@ function love.draw()
 
 	end
 
+
+end
+
+function sleep(sec)
+	socket.sleep(sec)
 
 end
