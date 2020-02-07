@@ -83,7 +83,7 @@ function collisons(dt)
 
 					-- dynamic --
 
-					local distance = math.sqrt(getDistance2(A, B))
+					local distance = A.r + B.r
 
 					local nx = (B.x - A.x) / distance
 					local ny = (B.y - A.y) / distance

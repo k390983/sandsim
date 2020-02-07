@@ -15,12 +15,13 @@ function love.load()
 
 	world.drag = 0.99
 	world.minSpeed = 1
-	world.maxSpeed = 1000
+	world.maxSpeed = 5000
 	world.updateSpeed = 0
 
 	love.window.setMode(world.x, world.y)
 
 	world.objects = {}
+	world.walls = {}
 
 	reset()
 

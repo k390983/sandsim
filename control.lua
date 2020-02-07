@@ -16,9 +16,30 @@ function createBall(x, y, vx, vy, r, m, e)
 
 end
 
+function createWall(x1, x2, y1, y2)
+	local wall = {}
+
+	wall.x1 = x1
+	wall.x2 = x2
+	wall.y1 = y1
+	wall.y2 = y2
+
+	local pos = #world.walls + 1
+	world.walls[pos] = wall
+
+	print("create wall"..pos)
+
+end
+
 function removeBall(a)
 	print("remove ball"..a)
 	world.objects[a] = nill
+
+end
+
+function removeWall(a)
+	print("remove wall"..a)
+	world.walls[a] = nill
 
 end
 
@@ -27,6 +48,18 @@ function reset()
 		removeBall(nameA)
 
 	end
+
+	for nameA, A in pairs(world.walls) do
+		removeWall(nameA)
+
+	end
+
+	wallWidth = 10
+
+	createWall(0, wallWidth, 0, world.y)
+	createWall(0, world.x, 0, wallWidth)
+	createWall(world.x, world.x - wallWidth, 0, world.y)
+	createWall(0, world.x, world.y - wallWidth, world.y)
 
 	createBall(100, 100, 0, 0, 40, 200, 1)
 	createBall(200, 100, 0, 0, 20, 50, 1)
