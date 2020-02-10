@@ -71,7 +71,7 @@ function reset()
 	createBall(100, 300, 60, 600)
 	createBall(200, 300, 20, 50)]]
 
-	for n = 0, 1000, 1 do
+	for n = 0, 500, 1 do
 		local size = math.random(1, 10)
 		createBall(math.random(0, world.x), math.random(0, world.y), size, size ^ 2, 0.9)
 

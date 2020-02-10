@@ -34,18 +34,23 @@ end
 
 
 function love.update(dt)
-	os.execute("clear")
-	print("ups:"..(1 / dt).." update speed: 1/"..2 ^ world.updateSpeed)
+	local time0 = love.timer.getTime()
 
 	mouseInput()
 	keyboardinput()
+
+	local time1 = love.timer.getTime()
 
 	dt = dt * 1 / 2 ^ world.updateSpeed
 
 	update(dt)
 
-end
+	local time2 = love.timer.getTime()
 
+	os.execute("clear")
+	print("ups:"..(1 / dt).." update speed: 1/"..2 ^ world.updateSpeed)
+
+end
 
 function love.draw()
 	love.graphics.setColor(1, 1, 1)
@@ -71,6 +76,7 @@ function love.draw()
 
 	end
 
+	print("fps: "..love.timer.getFPS())
 
 end
 
