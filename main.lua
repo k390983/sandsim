@@ -2,33 +2,36 @@
 require "maths"
 require "physics"
 require "control"
-local socket = require "socket"
 
 function love.load()
-	world = {}
+	root = {}
+		root.world = {}
+			root.world.objects = {}
+			root.world.x = 680
+			root.world.y = 680
+			root.world.globalDrag = 0.99
+			root.world.gravity = 100
+			root.world.upateSpeed = 2
+		root.system = {}
+			root.system.window = {}
+				root.system.window.x = 680
+				root.system.window.y = 680
+			root.system.startTime = love.timer.getTime()
+			root.system.fps = 0
+			root.system.ups = 0
+			root.system.input = {}
+				root.system.input.mouseState = false
+				root.system.input.eTime = love.timer.getTime()
+				root.system.input.qTime = love.timer.getTime()
+				root.system.input.pullSpeed = 10
+				root.system.input.currentBall = nil
 
-	world.x = 680
-	world.y = 680
+	objects = root.world.objects
+	input = root.system.input
 
-	world.drag = 0.99
-	world.gravity = 100
-	world.minSpeed = 1
-	world.maxSpeed = 5000
-	world.updateSpeed = 2
-
-	love.window.setMode(world.x, world.y)
-
-	world.objects = {}
-	world.walls = {}
+	love.window.setMode(root.system.window.x, root.system.window.y)
 
 	reset()
-
-	mouseState = false
-	qTime = love.timer.getTime()
-	eTime = love.timer.getTime()
-
-	pullSpeed = 10
-	currentBall = nil
 
 end
 

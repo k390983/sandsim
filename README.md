@@ -2,8 +2,59 @@
 
 Particle physics simulation using circles
 
-### Main to-do
+### Game structure
 
+- **root**
+    + world
+        * objects
+            - ball1
+                + type
+                + x
+                + y
+                + vx
+                + vy
+                + r
+                + m
+                + e
+            - ball2
+                + type
+                + x
+                + y
+                + vx
+                + vy
+                + r
+                + m
+                + e
+            - ball3
+                + type
+                + x
+                + y
+                + vx
+                + vy
+                + r
+                + m
+                + e
+            - ...
+        * x
+        * y
+        * g
+        * gobalDrag
+        * updateSpeed
+    + system
+        * startTime
+        * window
+            - x
+            - y
+        * fps
+        * ups
+        * input
+            - mouseState
+            - eTime
+            - qTime
+            - pullSpeed
+            - currentBall
+
+### Main to-do
 
 - [ ] **Basic collisions / physics**
 

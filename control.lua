@@ -5,8 +5,6 @@ function createBall(x, y, r, m, e)
 	ball.y = y
 	ball.vx = 0
 	ball.vy = 0
-	ball.ax = 0
-	ball.ay = 0
 	ball.r = r
 	ball.m = m
 	ball.e = e
