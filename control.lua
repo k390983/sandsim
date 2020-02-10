@@ -1,10 +1,12 @@
-function createBall(x, y, vx, vy, r, m, e)
+function createBall(x, y, r, m, e)
 	local ball = {}
 
 	ball.x = x
 	ball.y = y
-	ball.vx = vx
-	ball.vy = vy
+	ball.vx = 0
+	ball.vy = 0
+	ball.ax = 0
+	ball.ay = 0
 	ball.r = r
 	ball.m = m
 	ball.e = e
@@ -12,7 +14,7 @@ function createBall(x, y, vx, vy, r, m, e)
 	local pos = #world.objects + 1
 	world.objects[pos] = ball
 
-	print("create ball"..pos)
+	print("+ ball"..pos)
 
 end
 
@@ -27,18 +29,18 @@ function createWall(x1, x2, y1, y2)
 	local pos = #world.walls + 1
 	world.walls[pos] = wall
 
-	print("create wall"..pos)
+	print("+ wall"..pos)
 
 end
 
 function removeBall(a)
-	print("remove ball"..a)
+	print("- ball"..a)
 	world.objects[a] = nill
 
 end
 
 function removeWall(a)
-	print("remove wall"..a)
+	print("- wall"..a)
 	world.walls[a] = nill
 
 end
@@ -48,25 +50,32 @@ function reset()
 		removeBall(nameA)
 
 	end
+ 
 
 	for nameA, A in pairs(world.walls) do
 		removeWall(nameA)
 
 	end
 
-	wallWidth = 10
+	--[[wallWidth = 10
 
 	createWall(0, wallWidth, 0, world.y)
 	createWall(0, world.x, 0, wallWidth)
-	createWall(world.x, world.x - wallWidth, 0, world.y)
-	createWall(0, world.x, world.y - wallWidth, world.y)
+	createWall(world.x - wallWidth, world.x, 0, world.y)
+	createWall(0, world.x, world.y - wallWidth, world.y)[[]]
 
-	createBall(100, 100, 0, 0, 40, 200, 1)
-	createBall(200, 100, 0, 0, 20, 50, 1)
-	createBall(300, 100, 0, 0, 10, 10, 1)
-	createBall(400, 100, 0, 0, 20, 50, 1)
-	createBall(100, 300, 0, 0, 60, 600, 1)
-	createBall(200, 300, 0, 0, 20, 50, 1)
+	--[[createBall(100, 100, 40, 200)
+	createBall(200, 100, 20, 50)
+	createBall(300, 100, 10, 10)
+	createBall(400, 100, 20, 50)
+	createBall(100, 300, 60, 600)
+	createBall(200, 300, 20, 50)]]
+
+	for n = 0, 1000, 1 do
+		local size = math.random(1, 5)
+		createBall(math.random(0, world.x), math.random(0, world.y), size, size ^ 2, 0.9)
+
+	end
 
 end
 
@@ -77,8 +86,6 @@ function mouseInput()
 	if love.mouse.isDown(1) then
 		for nameA, A in pairs(world.objects) do
 			if isPointInCircle(x, y, A) then
-				--A.vx = (x - A.x) / dt
-				--A.vy = (y - A.y) / dt
 				A.vx = 0
 				A.vy = 0
 				A.x = x

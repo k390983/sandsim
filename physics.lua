@@ -1,14 +1,30 @@
 function update(dt)
 	updatePositions(dt)
-	--externalForces(dt)
+	externalForces(dt)
 	collisons(dt)
+
+end
+
+function applyForce(target, fx, fy) -- N * s
+	local x = fx / target.m
+	local y = fy / target.m
+
+	target.vx = target.vx + x
+	target.vy = target.vy + y
 
 end
 
 function externalForces(dt)
 	for nameA, A in pairs(world.objects) do
+
+		-- global drag --
+
 		A.vx = A.vx * world.drag
 		A.vy = A.vy * world.drag
+
+		-- gravity --
+
+		applyForce(A, 0, 10 * A.m)
 
 	end
 
@@ -16,45 +32,6 @@ end
 
 function updatePositions(dt)
 	for nameA, A in pairs(world.objects) do
-
-		-- screen edges --
-
-		if A.x < 0 then 
-			A.x = world.x
-		end
-		if A.x > world.x then
-			A.x = 0
-		end
-		if A.y < 0 then
-			A.y = world.y
-		end
-		if A.y > world.y then
-			A.y = 0
-		end
-
-		-- clamp speed --
-		
-		--if math.abs(A.vx) < world.minSpeed then A.vx = 0 end
-		--if math.abs(A.vy) < world.minSpeed then A.vy = 0 end
-
-		if A.vx > 0 then
-			if A.vx > world.maxSpeed then A.vx = world.maxSpeed end
-
-		else
-			if A.vx < -world.maxSpeed then A.vx = -world.maxSpeed end
-
-		end
-
-		if A.vy > 0 then
-			if A.vy > world.maxSpeed then A.vy = world.maxSpeed end
-
-		else
-			if A.vy < -world.maxSpeed then A.vy = -world.maxSpeed end
-
-		end
-
-		-- position --
-
 		A.x = A.x + A.vx * dt
 		A.y = A.y + A.vy * dt
 
@@ -65,6 +42,8 @@ end
 function collisons(dt)
 	for nameA, A in pairs(world.objects) do
 		
+		-- other objects --
+
 		for nameB, B in pairs(world.objects) do
 			if nameB ~= nameA then
 				if isColliding(A, B) then
@@ -83,25 +62,51 @@ function collisons(dt)
 
 					-- dynamic --
 
-					local distance = A.r + B.r
+					distance = math.sqrt(getDistance2(A, B))
+					local e = math.min(A.e, B.e)
 
-					local nx = (B.x - A.x) / distance
-					local ny = (B.y - A.y) / distance
+					local nx = (B.x - A.x) / distance;
+					local ny = (B.y - A.y) / distance;
 
-					local kx = A.vx - B.vx
-					local ky = A.vy - B.vy
-					local p = 2 * (nx * kx + ny * ky) / (A.m + B.m)
+					local tx = -ny;
+					local ty = nx;
 
-					A.vx = A.vx - p * B.m * nx
-					A.vy = A.vy - p * B.m * ny
+					local dpTan1 = A.vx * tx + A.vy * ty;
+					local dpTan2 = B.vx * tx + B.vy * ty;
 
-					B.vx = B.vx + p * A.m * nx
-					B.vy = B.vy + p * A.m * ny
+					local dpNorm1 = A.vx * nx + A.vy * ny;
+					local dpNorm2 = B.vx * nx + B.vy * ny;
+
+					local m1 = (dpNorm1 * (A.m - B.m) + 2 * B.m * dpNorm2) / (A.m + B.m);
+					local m2 = (dpNorm2 * (B.m - A.m) + 2 * A.m * dpNorm1) / (A.m + B.m);
+
+					A.vx = tx * dpTan1 + nx * m1 * e;
+					A.vy = ty * dpTan1 + ny * m1 * e;
+					B.vx = tx * dpTan2 + nx * m2 * e;
+					B.vy = ty * dpTan2 + ny * m2 * e;
 
 				end
 
 			end
 
+		end
+
+		if A.x - A.r < 0 then
+			A.x = A.x - (A.x - A.r)
+			A.vx = - A.vx
+		end
+		if A.x + A.r > world.x then
+			A.x = A.x + world.x - (A.x + A.r)
+			A.vx = - A.vx
+		end
+
+		if A.y - A.r < 0 then
+			A.y = A.y - (A.y - A.r)
+			A.vy = - A.vy
+		end
+		if A.y + A.r > world.y then
+			A.y = A.y + world.y - (A.y + A.r)
+			A.vy = - A.vy
 		end
 
 	end

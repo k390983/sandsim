@@ -6,17 +6,15 @@ local socket = require "socket"
 
 function love.load()
 	world = {}
-	
-	--world.x = 480
-	--world.y = 480
 
-	world.x = 1000
-	world.y = 1000
+	world.x = 680
+	world.y = 680
 
 	world.drag = 0.99
+	world.gravity = 100
 	world.minSpeed = 1
 	world.maxSpeed = 5000
-	world.updateSpeed = 0
+	world.updateSpeed = 2
 
 	love.window.setMode(world.x, world.y)
 
@@ -38,30 +36,6 @@ end
 function love.update(dt)
 	os.execute("clear")
 	print("ups:"..(1 / dt).." update speed: 1/"..2 ^ world.updateSpeed)
-	
-	local total = 0
-
-	for nameA, A in pairs(world.objects) do
-		print("ball"..
-			nameA..
-			": pos("..
-			math.floor(A.x)..
-			", "..
-			math.floor(A.y)..
-			") vel("..
-			math.floor(A.vx)..
-			", "..
-			math.floor(A.vy)..
-			", e: "..
-			math.floor(math.sqrt(A.vx ^ 2 + A.vy ^ 2) * A.m)..
-			")"
-		)
-
-		total = total + math.sqrt(A.vx ^ 2 + A.vy ^ 2) * A.m
-
-	end
-
-	print("total e: "..math.floor(total))
 
 	mouseInput()
 	keyboardinput()
@@ -69,10 +43,6 @@ function love.update(dt)
 	dt = dt * 1 / 2 ^ world.updateSpeed
 
 	update(dt)
-
-	--[[local mX, mY = love.mouse.getPosition()
-	world.objects.circleC.x = mX
-	world.objects.circleC.y = mY]]
 
 end
 
@@ -82,6 +52,11 @@ function love.draw()
 
 	for name, object in pairs(world.objects) do
 		love.graphics.circle("line", object.x, object.y, object.r)
+
+	end
+
+	for name, wall in pairs(world.walls) do
+		love.graphics.rectangle("fill", wall.x1, wall.y1, wall.x2, wall.y2)
 
 	end
 
