@@ -1,3 +1,11 @@
+--============================================================================--
+-- SandSim / maths.lua
+--============================================================================--
+
+--------------------------------------------------------------------------------
+-- basic calculation functions
+--------------------------------------------------------------------------------
+
 function isColliding(a, b)
 	if getDistance2(a, b) <= (a.r + b.r) ^ 2 then
 		return true
@@ -36,8 +44,3 @@ function isPointInCircle(x, y, a)
 end
 
 function getDistance2(a, b) return (a.x - b.x) ^ 2 + (a.y - b.y) ^ 2 end
-
-function getCollisionDirection(a, b)
-	
-
-end

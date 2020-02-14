@@ -1,9 +1,21 @@
+--============================================================================--
+-- SandSim / control.lua
+--============================================================================--
+
+--------------------------------------------------------------------------------
+-- main uptade function
+--------------------------------------------------------------------------------
+
 function update(dt)
 	updatePositions(dt)
 	externalForces(dt)
 	collisons(dt)
 
 end
+
+--------------------------------------------------------------------------------
+-- apply force
+--------------------------------------------------------------------------------
 
 function applyForce(target, fx, fy) -- N * s
 	local x = fx / target.m
@@ -14,13 +26,17 @@ function applyForce(target, fx, fy) -- N * s
 
 end
 
+--------------------------------------------------------------------------------
+-- external forces (gravity, drag, etc...)
+--------------------------------------------------------------------------------
+
 function externalForces(dt)
 	for nameA, A in pairs(world.objects) do
 
 		-- global drag --
 
-		A.vx = A.vx * world.drag
-		A.vy = A.vy * world.drag
+		A.vx = A.vx * world.globalDrag
+		A.vy = A.vy * world.globalDrag
 
 		-- gravity --
 
@@ -30,6 +46,10 @@ function externalForces(dt)
 
 end
 
+--------------------------------------------------------------------------------
+-- update ball posiitons
+--------------------------------------------------------------------------------
+
 function updatePositions(dt)
 	for nameA, A in pairs(world.objects) do
 		A.x = A.x + A.vx * dt
@@ -38,6 +58,10 @@ function updatePositions(dt)
 	end
 
 end
+
+--------------------------------------------------------------------------------
+-- ball / wall collisons
+--------------------------------------------------------------------------------
 
 function collisons(dt)
 	for nameA, A in pairs(world.objects) do
@@ -77,8 +101,12 @@ function collisons(dt)
 					local dpNorm1 = A.vx * nx + A.vy * ny;
 					local dpNorm2 = B.vx * nx + B.vy * ny;
 
-					local m1 = (dpNorm1 * (A.m - B.m) + 2 * B.m * dpNorm2) / (A.m + B.m);
-					local m2 = (dpNorm2 * (B.m - A.m) + 2 * A.m * dpNorm1) / (A.m + B.m);
+					local m1 =
+						(dpNorm1 * (A.m - B.m) + 2 * B.m * dpNorm2) /
+						(A.m + B.m);
+					local m2 =
+						(dpNorm2 * (B.m - A.m) + 2 * A.m * dpNorm1) /
+						(A.m + B.m);
 
 					A.vx = tx * dpTan1 + nx * m1 * e;
 					A.vy = ty * dpTan1 + ny * m1 * e;
