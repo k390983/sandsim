@@ -105,9 +105,9 @@ Particle physics simulation using circles
     	```
 
 - [ ] **Optimization**
-        - [ ] **Faster static collision**
-        - [ ] **Faster dynamic collision**
-        - [ ] **Faster loops**
+	- [ ] **Faster static collision**
+	- [ ] **Faster dynamic collision**
+	- [ ] **Faster loops**
     
 - [ ] **Player interaction**
 - [ ] **Sand**
