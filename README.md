@@ -8,32 +8,8 @@ Particle physics simulation using circles
     + world
         * objects
             - ball1
-                + type
-                + x
-                + y
-                + vx
-                + vy
-                + r
-                + m
-                + e
             - ball2
-                + type
-                + x
-                + y
-                + vx
-                + vy
-                + r
-                + m
-                + e
             - ball3
-                + type
-                + x
-                + y
-                + vx
-                + vy
-                + r
-                + m
-                + e
             - ...
         * x
         * y
@@ -49,6 +25,7 @@ Particle physics simulation using circles
         * ups
         * input
             - mouseState
+            - mode
             - eTime
             - qTime
             - pullSpeed
@@ -63,6 +40,7 @@ Particle physics simulation using circles
     - [x] **Static**
       
         ```lua
+
         local distance = math.sqrt(getDistance2(A, B))
 
         local overlap = (distance - A.r - B.r) / 2
@@ -72,12 +50,14 @@ Particle physics simulation using circles
 
         B.x = B.x + overlap * (A.x - B.x) / distance
         B.y = B.y + overlap * (A.y - B.y) / distance
+
     	```
     	
     - [x] **Dynamic**
       [wikipedia](https://en.wikipedia.org/wiki/Elastic_collision)
 		
     	```lua
+
         distance = math.sqrt(getDistance2(A, B))
         local e = math.min(A.e, B.e)
       
@@ -102,6 +82,7 @@ Particle physics simulation using circles
         A.vy = ty * dpTan1 + ny * m1 * e;
         B.vx = tx * dpTan2 + nx * m2 * e;
         B.vy = ty * dpTan2 + ny * m2 * e;
+
     	```
 
 - [ ] **Optimization**
