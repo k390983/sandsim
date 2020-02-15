@@ -24,6 +24,25 @@ function createBall(x, y, r, m, e)
 
 end
 
+function newElement(template, x, y, vx, vy)
+	local ball = {}
+
+	ball.x = x
+	ball.y = y
+	ball.vx = 0
+	ball.vy = 0
+	ball.r = template.r
+	ball.m = template.m
+	ball.e = template.e
+	ball.c = template.c
+
+	local pos = #world.objects + 1
+	world.objects[pos] = ball
+
+	print("+ ball"..pos)
+
+end
+
 function removeBall(a)
 	print("- ball"..a)
 	world.objects[a] = nill
@@ -41,12 +60,23 @@ function reset()
 	end
 
 	for n = 0, 500, 1 do
-		local size = math.random(5, 10)
-		createBall(
-			math.random(20, world.x - 20),
-			math.random(20, world.y - 20),
-			size,size ^ 2,
-			0.9
+		newElement(
+			water,
+			math.random(32, world.x - 32),
+			math.random(32, world.y - 32),
+			0,
+			0
+		)
+
+	end
+
+	for n = 0, 500, 1 do
+		newElement(
+			sand,
+			math.random(32, world.x - 32),
+			math.random(32, world.y - 32),
+			0,
+			0
 		)
 
 	end

@@ -10,6 +10,7 @@ require "maths"
 require "physics"
 require "control"
 require "draw"
+require "elements"
 
 --------------------------------------------------------------------------------
 -- love2d functions
@@ -24,6 +25,7 @@ function love.load()
 			root.world.globalDrag = 0.99
 			root.world.gravity = 100
 			root.world.updateSpeed = 2
+			root.world.shake = 1000
 		root.system = {}
 			root.system.window = {}
 				root.system.window.x = root.world.x

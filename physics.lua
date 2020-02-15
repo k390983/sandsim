@@ -27,7 +27,7 @@ function applyForce(target, fx, fy) -- N * s
 end
 
 --------------------------------------------------------------------------------
--- external forces (gravity, drag, etc...)
+-- external forces (gravity, drag, shake, etc...)
 --------------------------------------------------------------------------------
 
 function externalForces(dt)
@@ -41,6 +41,10 @@ function externalForces(dt)
 		-- gravity --
 
 		applyForce(A, 0, 10 * A.m)
+
+		-- shake --
+
+		applyForce(A, world.shake * math.random(-1, 1), world.shake * math.random(-1, 1))
 
 	end
 

@@ -10,13 +10,13 @@ function drawWorld()
 	for name, object in pairs(world.objects) do
 		if object == system.input.currentBall then
 			love.graphics.setColor(1, 0, 0)
+			love.graphics.circle("line", object.x, object.y, object.r)
 
 		else
-			love.graphics.setColor(1, 1, 1)
+			love.graphics.setColor(object.c)
+			love.graphics.circle("fill", object.x, object.y, object.r)
 
 		end
-
-		love.graphics.circle("line", object.x, object.y, object.r)
 
 	end
 
