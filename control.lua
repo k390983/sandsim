@@ -59,7 +59,7 @@ function reset()
 
 	end
 
-	for n = 0, 500, 1 do
+	for n = 0, 1000, 1 do
 		newElement(
 			water,
 			math.random(32, world.x - 32),
@@ -70,7 +70,7 @@ function reset()
 
 	end
 
-	for n = 0, 500, 1 do
+	for n = 0, 250, 1 do
 		newElement(
 			sand,
 			math.random(32, world.x - 32),

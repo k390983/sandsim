@@ -44,7 +44,11 @@ function externalForces(dt)
 
 		-- shake --
 
-		applyForce(A, world.shake * math.random(-1, 1), world.shake * math.random(-1, 1))
+		applyForce(
+			A,
+			world.shake.x * math.random(-1, 1),
+			world.shake.y * math.random(-1, 1)
+		)
 
 	end
 
@@ -82,11 +86,11 @@ function collisons(dt)
 
 					local overlap = (distance - A.r - B.r) / 2
 
-					A.x = A.x - overlap * (A.x - B.x) / distance
-					A.y = A.y - overlap * (A.y - B.y) / distance
+					A.x = A.x - overlap * 1.1 * (A.x - B.x) / distance
+					A.y = A.y - overlap * 1.1 * (A.y - B.y) / distance
 
-					B.x = B.x + overlap * (A.x - B.x) / distance
-					B.y = B.y + overlap * (A.y - B.y) / distance
+					B.x = B.x + overlap * 1.1 * (A.x - B.x) / distance
+					B.y = B.y + overlap * 1.1 * (A.y - B.y) / distance
 
 					-- dynamic --
 

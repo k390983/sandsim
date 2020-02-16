@@ -23,9 +23,11 @@ function love.load()
 			root.world.x = 680
 			root.world.y = 680
 			root.world.globalDrag = 0.99
-			root.world.gravity = 10000
+			root.world.gravity = 1000
 			root.world.updateSpeed = 2
-			root.world.shake = 1000
+			root.world.shake = {}
+			root.world.shake.x = 1000
+			root.world.shake.y = 500
 		root.system = {}
 			root.system.window = {}
 				root.system.window.x = root.world.x

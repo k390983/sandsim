@@ -7,6 +7,19 @@
 --------------------------------------------------------------------------------
 
 function drawWorld()
+	--background
+
+	love.graphics.setColor(0.6, 0.6, 0.6)
+
+	love.graphics.rectangle(
+		"fill",
+		0,
+		0,
+		system.window.x,
+		system.window.y
+	)
+
+	-- balls
 	for name, object in pairs(world.objects) do
 		if object == system.input.currentBall then
 			love.graphics.setColor(1, 0, 0)
@@ -36,6 +49,7 @@ function drawUI()
 
 	if system.input.mode == 4 and system.input.currentBall ~= nil then
 		love.graphics.setColor(1, 0, 0)
+		love.graphics.setLineWidth(1)
 
 		love.graphics.line(
 			love.mouse.getX(),
@@ -61,8 +75,20 @@ function drawUI()
 	-- bottom UI
 
 	love.graphics.setColor(0.3, 0.3, 0.3)
+
 	love.graphics.rectangle(
 		"fill",
+		0,
+		system.window.y - 64,
+		system.window.x,
+		64
+	)
+
+	love.graphics.setColor(0.2, 0.2, 0.2)
+	love.graphics.setLineWidth(4)
+
+	love.graphics.rectangle(
+		"line",
 		0,
 		system.window.y - 64,
 		system.window.x,
