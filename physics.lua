@@ -9,6 +9,7 @@
 function update(dt)
 	updatePositions(dt)
 	externalForces(dt)
+	updateChunks()
 	collisons(dt)
 
 end

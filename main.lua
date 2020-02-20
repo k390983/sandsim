@@ -20,6 +20,7 @@ function love.load()
 	root = {}
 		root.world = {}
 			root.world.objects = {}
+			root.world.chunks = {}
 			root.world.x = 680
 			root.world.y = 680
 			root.world.globalDrag = 0.99

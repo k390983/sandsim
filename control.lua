@@ -16,6 +16,7 @@ function createBall(x, y, r, m, e)
 	ball.r = r
 	ball.m = m
 	ball.e = e
+	ball.chunk = nil
 
 	local pos = #world.objects + 1
 	world.objects[pos] = ball
@@ -50,6 +51,44 @@ function removeBall(a)
 end
 
 --------------------------------------------------------------------------------
+-- chunk functions
+--------------------------------------------------------------------------------
+
+function generateCunks()
+	for i = 0, world.y, 16 do
+		for j = 0, world.x, 16 do
+			local chunk = {}
+
+			local pos = #world.chunks + 1
+			world.chunks[pos] = chunk
+
+			print("+ chunk"..pos)
+
+		end
+
+	end
+
+end
+
+function updateChunks()
+	for nameC, C in world.chunks do
+		world.chunks[nameC] = nil
+
+	end
+
+	for nameA, A in world.objects do
+		local cX = math.floor(A.x / 16)
+		local cY = math.floor(A.y / 16)
+		local chunk = cY * (world.x / 16) + cX
+
+		local pos = #world.chunks[chunk] + 1
+		world.chunks[chunk][pos] = nameA
+
+	end
+
+end
+
+--------------------------------------------------------------------------------
 -- reset simulation
 --------------------------------------------------------------------------------
 
@@ -58,6 +97,8 @@ function reset()
 		removeBall(nameA)
 
 	end
+
+	generateCunks()
 
 	for n = 0, 1000, 1 do
 		newElement(
